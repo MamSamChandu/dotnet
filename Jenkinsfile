@@ -29,11 +29,11 @@ pipeline {
 	 echo $secret_key
          aws configure set aws_access_key_id $access_key
          aws configure set aws_secret_access_key $secret_key
-         aws configure set default.region ap-south-1
-         DOCKER_LOGIN_PASSWORD=$(aws ecr get-login-password  --region ap-south-1)
-         docker login -u AWS -p $DOCKER_LOGIN_PASSWORD 645624701308.dkr.ecr.ap-south-1.amazonaws.com/demo
-	 docker build -t 645624701308.dkr.ecr.ap-south-1.amazonaws.com/demo:SAMPLE-PROJECT-${BUILD_NUMBER} .
-	 docker push 645624701308.dkr.ecr.ap-south-1.amazonaws.com/demo:SAMPLE-PROJECT-${BUILD_NUMBER}
+         aws configure set default.region ap-northeast-2
+         DOCKER_LOGIN_PASSWORD=$(aws ecr get-login-password  --region ap-northeast-2)
+         docker login -u AWS -p $DOCKER_LOGIN_PASSWORD 645624701308.dkr.ecr.ap-northeast-2.amazonaws.com/my-ecr
+	 docker build -t 645624701308.dkr.ecr.ap-northeast-2.amazonaws.com/my-ecr:SAMPLE-PROJECT-${BUILD_NUMBER} .
+	 docker push 645624701308.dkr.ecr.ap-northeast-2.amazonaws.com/my-ecr:SAMPLE-PROJECT-${BUILD_NUMBER}
           
 	  '''
      }   
@@ -47,7 +47,7 @@ pipeline {
                   export AWS_DEFAULT_REGION=ap-south-1
 		  chmod +x changebuildnumber.sh
                   ./changebuildnumber.sh $BUILD_NUMBER
-                  aws eks --region ap-south-1 update-kubeconfig --name eks-cluster
+                  aws eks --region ap-northeast-2 update-kubeconfig --name my-ecr
                   cat deployment.yml
                   kubectl apply -f  deployment-new.yml
                   kubectl get pods 
